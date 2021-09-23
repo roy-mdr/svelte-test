@@ -1,0 +1,23 @@
+:root {
+	/* colors */
+	--light-grey: #EEE;
+	--light-mid-grey: #999;
+	--mid-grey: #757575;
+	--dark-grey: #333;
+	--light-blue: #a6cae2;
+	/* --red: #c81414; */
+	--red: indianred;
+	--light-green: #ABDBA9;
+}
+
+.light-theme {
+	--emphasis: var(--light-blue);
+	--bg_main: white;
+	--bg_modal: var(--light-grey);
+}
+
+.dark-theme {
+	--emphasis: var(--light-green);
+	--bg_main: var(--dark-grey);
+	--bg_modal: #111;
+}
