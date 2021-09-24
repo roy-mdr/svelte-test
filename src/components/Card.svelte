@@ -45,7 +45,7 @@
 .card-main_card {
 	background-color: white;
 	border: 1px solid var(--emphasis);
-	box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.2);
+	box-shadow: var(--default-shadow);
 	display: flex;
 	flex-direction: column;
 	min-width: 200px;
@@ -157,7 +157,7 @@
 }
 
 .card-main_card :global(table tr:hover) {
-	box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.2);
+	box-shadow: var(--default-shadow);
 }
 
 .card-main_card :global(table tr td),
@@ -278,7 +278,7 @@
 .card-main_card :global(.card-seccion input[type="text"]:focus),
 .card-main_card :global(.card-seccion input[type="number"]:focus),
 .card-main_card :global(.card-seccion input[type="password"]:focus) {
-	box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.2);
+	box-shadow: var(--default-shadow);
 }
 
 .card-main_card :global(.card-seccion textarea) {
@@ -303,7 +303,7 @@
 }
 
 .card-main_card :global(.card-seccion textarea:focus) {
-	box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.2);
+	box-shadow: var(--default-shadow);
 }
 
 .card-main_card :global(.card-seccion input[type="text"]:disabled),
@@ -360,7 +360,7 @@
 .card-main_card :global(button:hover),
 .card-main_card :global(button:focus) {
 	color: var(--dark-grey);
-	box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.2);
+	box-shadow: var(--default-shadow);
 }
 
 
@@ -398,7 +398,7 @@
 }
 
 .card-main_card :global(.radio-style-1 label:hover) {
-	box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.2);
+	box-shadow: var(--default-shadow);
 	color: var(--mid-grey);
 	z-index: 1;
 }

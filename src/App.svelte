@@ -3,6 +3,7 @@
 	/* imports */
 	import { onMount } from 'svelte';
 	import './css/theme.css';
+	import Datenav from './views/view1/Datenav.svelte';
 	import Table from './views/view1/Table.svelte';
 	import Usuarios from './views/view1/Usuarios.svelte';
 
@@ -44,14 +45,39 @@
 
 
 	/* modal usuarios */
-	let modalUsuarios = false;
+	let modalEditDay = false;
+	let editingDate = '';
 
-	function openUsuarios() {
-		modalUsuarios = true;
+	function openEditDay(ev) {
+		editingDate = ev.detail.date;
+		modalEditDay = true;
 	}
 
-	function closeUsuarios() {
-		modalUsuarios = false;
+	function closeEditDay() {
+		modalEditDay = false;
+	}
+
+
+
+	/* toggle staff attendance */
+	function toggleStaffAttendance(ev) {
+		
+		switch (ev.detail.person.attended) {
+			case true:
+				ev.detail.person.attended = false;
+				break;
+		
+			case false:
+				ev.detail.person.attended = null;
+				break;
+				
+			default:
+				ev.detail.person.attended = true;
+				break;
+		}
+
+		getPersonal = getPersonal;
+
 	}
 
 </script>
@@ -65,16 +91,22 @@
 		Dark Theme
 		{/if}
 	</button>
-	<button disabled="disabled">Marcar dia de descanso</button>
-	<button on:click={openUsuarios}>Open Usuarios</button>
+	<button>Agregar personal</button>
 
-	<Table {getPersonal}/>
+	<Datenav></Datenav>
 
-	{#if modalUsuarios}
+	<Table
+		{getPersonal}
+		on:editDay={openEditDay}
+		on:toggleAttendance={toggleStaffAttendance}
+	/>
+
+	{#if modalEditDay}
 	<Usuarios
+		{editingDate}
 		{getPersonal}
 		on:save={saveUsuarios}
-		on:close={closeUsuarios}
+		on:close={closeEditDay}
 	/>
 	{/if}
 </div>

@@ -1,5 +1,16 @@
 <script>
 
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
+	
+	function emitEditDay(date) {
+		dispatch('editDay', {date: date});
+	}
+
+	function emitToggleAttendance(person) {
+		dispatch('toggleAttendance', {person: person});
+	}
+
 	/* props */
 	export let getPersonal;
 
@@ -80,7 +91,7 @@
 		<tr>
 			{#each week as wday}
 				<th>
-					<button type="button" class:today={wday.epoch == today.getTime()}>{`${wday.date}/${wday.month}/${wday.year}`}</button>
+					<button type="button" class:today={wday.epoch == today.getTime()} on:click={() => { emitEditDay(`${wday.year}.${wday.month}.${wday.date}`); }}>{`${wday.year}.${wday.month}.${wday.date}`}</button>
 				</th>
 			{/each}
 		</tr>
@@ -100,10 +111,36 @@
 				<td>
 					{persona.name}
 				</td>
-
+				
 				{#each week as wday}
-					<td>
-						<button type="button" class:did={persona.attended === true} class:didnot={persona.attended === false}>{persona.attended}</button>
+					<td class="date-td" class:did={persona.attended === true} class:didnot={persona.attended === false}>
+						{#if wday.epoch == today.getTime()}
+							<button
+								type="button"
+								class="today"
+								class:did={persona.attended === true}
+								class:didnot={persona.attended === false}
+								on:click={ () => { emitToggleAttendance(persona); }}
+							>
+								{#if persona.attended === true}
+									✔
+								{:else if persona.attended === false}
+									❌
+								{:else}
+									...
+								{/if}
+							</button>
+						{:else}
+							<span>
+								{#if persona.attended === true}
+									✔
+								{:else if persona.attended === false}
+									❌
+								{:else}
+									?
+								{/if}
+							</span>
+						{/if}
 					</td>
 				{/each}
 				
@@ -125,14 +162,34 @@
 	}
 
 	.today {
-		background-color: tomato;
+		box-shadow: /* inset */ var(--default-shadow);
 	}
 
 	.did {
-        background-color: var(--emphasis);
-    }
-    
-    .didnot {
-        background-color: var(--red);
-    }
+		background-color: var(--emphasis);
+	}
+	
+	.didnot {
+		background-color: var(--red);
+	}
+
+	button.did {
+		border-color: var(--emphasis);
+		background-color: white;
+	}
+	
+	button.didnot {
+		border-color: var(--red);
+		background-color: white;
+	}
+
+	.date-td {
+		border-radius: 2px;
+		text-align: center;
+	}
+
+	.date-td button {
+		width: 100%;
+	}
+
 </style>
