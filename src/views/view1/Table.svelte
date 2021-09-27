@@ -1,5 +1,8 @@
 <script>
 
+	/* imports */
+	import DateFunc from '../../js/DateFunc.js';
+
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	
@@ -12,16 +15,19 @@
 	}
 
 	/* props */
+	export let today;
+	// const today = new Date(1609473219000);
+	// console.log(today.getTimezoneOffset() * 60 * 1000);
 	export let getPersonal;
+	export let dateSelected;
+	$: console.log('from table', dateSelected)
+	
 
 
 
 	/* Date / Fecha */
-	const today = new Date(Date.now() + 0*(24 * 60 * 60 * 1000));
-	// const today = new Date(1609473219000);
-	console.log(today.getTimezoneOffset() * 60 * 1000);
 
-	function getCurrentDate(horaLocal = true) {
+	/*function getCurrentDate(horaLocal = true) {
 		// getDay == 0 ? Sunday (Domingo)
 		// getMonth == 0 ? January (Enero)
 		if (horaLocal) {
@@ -43,30 +49,31 @@
 				year: today.getUTCFullYear()
 			}
 		}
-	}
+	}*/
 
-	function getCurrentWeek() {
+	function getWeek(dateObj = DateFunc.formattedToDate(today) ) {
 
-		const day = today.getDay();
+		const day = dateObj.getDay();
 		const msDay = 24 * 60 * 60 * 1000;
-		const sunday = today - (day*msDay);
+		const sunday = dateObj - (day * msDay);
 		const week = [];
 		
 		for (let d = 0; d < 7; d++) {
-			const wd = new Date(sunday+(d*msDay))
+			const wd = new Date( sunday + ( (d * msDay) + DateFunc.paddingForTimezoneShift ) )
 			week.push( {
 				epoch: wd.getTime(),
 				year: wd.getFullYear(),
 				month: wd.getMonth()+1,
 				date: wd.getDate(),
-				day_string: wd.toLocaleString('es-mx', {  weekday: 'long' })
+				day_string: wd.toLocaleString('es-mx', {  weekday: 'long' }),
+				formatted: DateFunc.formatDate(wd)
 			} );
 		}
 
 		return week;
 	}
 
-	const week = getCurrentWeek();
+	$: week = getWeek( dateSelected == '' ? undefined : DateFunc.formattedToDate(dateSelected) );
 
 </script>
 
@@ -91,7 +98,7 @@
 		<tr>
 			{#each week as wday}
 				<th>
-					<button type="button" class:today={wday.epoch == today.getTime()} on:click={() => { emitEditDay(`${wday.year}.${wday.month}.${wday.date}`); }}>{`${wday.year}.${wday.month}.${wday.date}`}</button>
+					<button type="button" class:today={wday.formatted == today} on:click={() => { emitEditDay(wday.formatted); }}>{wday.formatted}</button>
 				</th>
 			{/each}
 		</tr>
@@ -114,7 +121,7 @@
 				
 				{#each week as wday}
 					<td class="date-td" class:did={persona.attended === true} class:didnot={persona.attended === false}>
-						{#if wday.epoch == today.getTime()}
+						{#if wday.formatted == today}
 							<button
 								type="button"
 								class="today"

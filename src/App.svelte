@@ -6,6 +6,7 @@
 	import Datenav from './views/view1/Datenav.svelte';
 	import Table from './views/view1/Table.svelte';
 	import Usuarios from './views/view1/Usuarios.svelte';
+	import DateFunc from './js/DateFunc.js';
 
 	import vigente from './data_fake.js';
 
@@ -80,6 +81,12 @@
 
 	}
 
+
+
+	/* Date / fecha */
+	const today = DateFunc.formatDate( new Date(Date.now() + 0*(24 * 60 * 60 * 1000)) );
+	let dateSelected = '';
+
 </script>
 
 <div id="app" class={darkTheme ? "dark-theme" : "light-theme"}>
@@ -93,10 +100,15 @@
 	</button>
 	<button>Agregar personal</button>
 
-	<Datenav></Datenav>
+	<Datenav
+		{today}
+		on:dateSelect={(ev) => dateSelected = ev.detail.date}
+	/>
 
 	<Table
 		{getPersonal}
+		{today}
+		{dateSelected}
 		on:editDay={openEditDay}
 		on:toggleAttendance={toggleStaffAttendance}
 	/>
