@@ -1,26 +1,113 @@
 <script>
 
 	/* imports */
+	import { onMount, createEventDispatcher } from 'svelte';
 	import DateFunc from '../../js/DateFunc.js';
-
-	import { createEventDispatcher } from 'svelte';
-	const dispatch = createEventDispatcher();
 	
+	import vigente from '../../data_fake.js';
+	
+	
+	
+	/* life cycle */
+	onMount(fetchData);
+	
+	
+	
+	/* emitters */
+	const dispatch = createEventDispatcher();
+
 	function emitEditDay(date) {
 		dispatch('editDay', {date: date});
 	}
 
-	function emitToggleAttendance(person) {
-		dispatch('toggleAttendance', {person: person});
-	}
+
 
 	/* props */
 	export let today;
-	// const today = new Date(1609473219000);
-	// console.log(today.getTimezoneOffset() * 60 * 1000);
-	export let getPersonal;
 	export let dateSelected;
-	$: console.log('from table', dateSelected)
+
+
+
+	/* fetch data */
+	let staffPromise = new Promise( ()=>{} );
+	let staff = {};
+
+	function fetchData() {
+		setTimeout( () => {
+			staffPromise = Promise.resolve();
+			staff = shiftStaffData(vigente);
+		} , 1500);
+	}
+
+
+
+	function shiftStaffData(staffData) {
+		const staff = {};
+
+		// for each day
+		for (const day in staffData) {
+			const dayStaff = staffData[day].staff;
+			
+			// for each staff member
+			for (const person of dayStaff) {
+				if (staff[person.name] === undefined) {
+					staff[person.name] = {};
+				}
+
+				staff[person.name][day] = {};
+				staff[person.name][day].type = person.type;
+				staff[person.name][day].active = person.active;
+				staff[person.name][day].attended = person.attended;
+				staff[person.name][day].details = person.details;
+			}
+		}
+		
+		console.log(staff);
+		return staff;
+	}
+
+
+
+	/* toggle staff attendance */
+	function toggleStaffAttendance(staffDate) {
+
+		if (staffDate === undefined) {
+
+		}
+		
+		switch (staffDate.attended) {
+			case true:
+				staffDate.attended = false;
+				break;
+		
+			case false:
+				staffDate.attended = null;
+				break;
+				
+			default:
+				staffDate.attended = true;
+				break;
+		}
+
+		staff = staff;
+
+	}
+
+	function registerToday(staffMemberName) {
+
+		if (staff[staffMemberName] === undefined) {
+			staff[staffMemberName] = {};
+		}
+
+		staff[staffMemberName][today] = {};
+		staff[staffMemberName][today].type = staff[staffMemberName].last.type;
+		staff[staffMemberName][today].active = true;
+		staff[staffMemberName][today].attended = true;
+		staff[staffMemberName][today].details = {};
+
+		console.log(staff[staffMemberName]);
+
+	}
 	
 
 
@@ -54,12 +141,11 @@
 	function getWeek(dateObj = DateFunc.formattedToDate(today) ) {
 
 		const day = dateObj.getDay();
-		const msDay = 24 * 60 * 60 * 1000;
-		const sunday = dateObj - (day * msDay);
+		const sunday = dateObj - (day * DateFunc.msDay);
 		const week = [];
 		
 		for (let d = 0; d < 7; d++) {
-			const wd = new Date( sunday + ( (d * msDay) + DateFunc.paddingForTimezoneShift ) )
+			const wd = new Date( sunday + ( (d * DateFunc.msDay) + DateFunc.paddingForTimezoneShift ) )
 			week.push( {
 				epoch: wd.getTime(),
 				year: wd.getFullYear(),
@@ -104,57 +190,62 @@
 		</tr>
 	</thead>
 	<tbody>
-		{#await getPersonal}
-			<div>loading...</div>
-		{:then personal} 
-			{#each personal.staff as persona, index}
+		{#await staff}
+		<div>loading...</div>
+		{:then staffLog}
+			{#each Object.entries(staffLog) as [staffMember, memberDays], memberIndex (staffMember) }
 			<tr>
 				<td>
-					{index+1}
+					{memberIndex+1}
 				</td>
 				<td>
-					{persona.type}
+					{staffMember.type}
 				</td>
 				<td>
-					{persona.name}
+					{staffMember}
 				</td>
 				
 				{#each week as wday}
-					<td class="date-td" class:did={persona.attended === true} class:didnot={persona.attended === false}>
-						{#if wday.formatted == today}
+					{#if wday.formatted == today}
+						<td class="date-td">
 							<button
 								type="button"
 								class="today"
-								class:did={persona.attended === true}
-								class:didnot={persona.attended === false}
-								on:click={ () => { emitToggleAttendance(persona); }}
+								class:did={ memberDays[today] !== undefined && memberDays[today].attended === true }
+								class:didnot={ memberDays[today] !== undefined && memberDays[today].attended === false }
+								on:click={ () => { memberDays[today] ? toggleStaffAttendance(memberDays[today]) : registerToday(staffMember) }}
 							>
-								{#if persona.attended === true}
+								{#if memberDays[today] !== undefined && memberDays[today].attended === true}
 									✔
-								{:else if persona.attended === false}
+								{:else if memberDays[today] !== undefined && memberDays[today].attended === false}
 									❌
 								{:else}
 									...
 								{/if}
 							</button>
-						{:else}
+						</td>
+					{:else if memberDays[wday.formatted] !== undefined}
+						<td class="date-td" class:did={memberDays[wday.formatted].attended === true} class:didnot={memberDays[wday.formatted].attended === false}>
 							<span>
-								{#if persona.attended === true}
-									✔
-								{:else if persona.attended === false}
-									❌
+								{#if memberDays[wday.formatted].attended === true}
+								✔
+								{:else if memberDays[wday.formatted].attended === false}
+								❌
 								{:else}
-									?
+								?
 								{/if}
 							</span>
-						{/if}
-					</td>
+						</td>
+					{:else}
+						<td class="date-td">
+							<!-- <span>x</span> -->
+						</td>
+					{/if}
 				{/each}
 				
 			</tr>
 			{/each}
 		{/await}
-		
 	</tbody>
 </table>
 

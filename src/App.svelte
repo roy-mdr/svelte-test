@@ -1,19 +1,11 @@
 <script>
 
 	/* imports */
-	import { onMount } from 'svelte';
 	import './css/theme.css';
 	import Datenav from './views/view1/Datenav.svelte';
 	import Table from './views/view1/Table.svelte';
 	import Usuarios from './views/view1/Usuarios.svelte';
 	import DateFunc from './js/DateFunc.js';
-
-	import vigente from './data_fake.js';
-
-
-
-	/* life cycle */
-	onMount(fetchData);
 
 
 
@@ -23,17 +15,7 @@
 	function toggleTheme() {
 		darkTheme = !darkTheme;
 	}
-	
-	
 
-	/* fetch data */
-	let getPersonal = new Promise( ()=>{} );
-
-	function fetchData() {
-		setTimeout( () => {
-			getPersonal = Promise.resolve(vigente);
-		} , 1500);
-	}
 
 
 	function saveUsuarios(event) {
@@ -60,31 +42,10 @@
 
 
 
-	/* toggle staff attendance */
-	function toggleStaffAttendance(ev) {
-		
-		switch (ev.detail.person.attended) {
-			case true:
-				ev.detail.person.attended = false;
-				break;
-		
-			case false:
-				ev.detail.person.attended = null;
-				break;
-				
-			default:
-				ev.detail.person.attended = true;
-				break;
-		}
-
-		getPersonal = getPersonal;
-
-	}
-
-
-
 	/* Date / fecha */
 	const today = DateFunc.formatDate( new Date(Date.now() + 0*(24 * 60 * 60 * 1000)) );
+	// const today = new Date(1609473219000);
+	// console.log(today.getTimezoneOffset() * 60 * 1000);
 	let dateSelected = '';
 
 </script>
@@ -106,17 +67,14 @@
 	/>
 
 	<Table
-		{getPersonal}
 		{today}
 		{dateSelected}
 		on:editDay={openEditDay}
-		on:toggleAttendance={toggleStaffAttendance}
 	/>
 
 	{#if modalEditDay}
 	<Usuarios
 		{editingDate}
-		{getPersonal}
 		on:save={saveUsuarios}
 		on:close={closeEditDay}
 	/>

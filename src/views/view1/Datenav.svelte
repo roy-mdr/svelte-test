@@ -27,12 +27,8 @@
 	}
 
 	function shiftDate(offsetInDays) {
-
 		const dateSelectedDateObj = DateFunc.formattedToDate(dateSelected);
-		
-		const msDay = 24 * 60 * 60 * 1000;
-		const offset = (msDay * offsetInDays) + DateFunc.paddingForTimezoneShift;
-		
+		const offset = (DateFunc.msDay * offsetInDays) + DateFunc.paddingForTimezoneShift;
 		dateSelected = DateFunc.formatDate( new Date( dateSelectedDateObj.getTime() + offset) );
 	}
 

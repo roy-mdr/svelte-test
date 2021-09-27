@@ -57,8 +57,9 @@
 		<div>loading...</div>
 	{:then} 
         <div class="card-seccion">
-            <button>Rehabilitar personal registrado</button>
             <button>Marcar dia de descanso</button>
+            <button>Importar personal activo</button>
+            <button>Reactivar personal registrado</button>
         </div>
 		{#each staff as persona, index}
 			<div class="card-seccion">
