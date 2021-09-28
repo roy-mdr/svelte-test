@@ -20,92 +20,141 @@
 		dispatch('editDay', {date: date});
 	}
 
+	function emitUpdateApiDataStaff(apiData) {
+		dispatch('updateApiDataStaff', apiData);
+	}
+
 
 
 	/* props */
 	export let today;
 	export let dateSelected;
+	export let apiDataStaff;
+
+
+
+	/* computed */
+	$: staffTable = transposeStaffData(apiDataStaff);
+	$: week = getWeek( dateSelected == '' ? undefined : DateFunc.formattedToDate(dateSelected) );
 
 
 
 	/* fetch data */
-	let staffPromise = new Promise( ()=>{} );
-	let staff = {};
 
 	function fetchData() {
 		setTimeout( () => {
-			staffPromise = Promise.resolve();
-			staff = shiftStaffData(vigente);
+			emitUpdateApiDataStaff(vigente);
 		} , 1500);
 	}
 
 
 
-	function shiftStaffData(staffData) {
+	function transposeStaffData(staffData) {
+		
 		const staff = {};
 
 		// for each day
 		for (const day in staffData) {
-			const dayStaff = staffData[day].staff;
 			
-			// for each staff member
-			for (const person of dayStaff) {
-				if (staff[person.name] === undefined) {
-					staff[person.name] = {};
-				}
+			if (day != 'last') {
+				const dayStaff = staffData[day].staff;
 
-				staff[person.name][day] = {};
-				staff[person.name][day].type = person.type;
-				staff[person.name][day].active = person.active;
-				staff[person.name][day].attended = person.attended;
-				staff[person.name][day].details = person.details;
+				// for each staff member
+				for (const person in dayStaff) {
+					if (staff[person] === undefined) {
+						staff[person] = {};
+					}
+
+					staff[person][day]          = {};
+					staff[person][day].type     = dayStaff[person].type;
+					staff[person][day].active   = dayStaff[person].active;
+					staff[person][day].attended = dayStaff[person].attended;
+					staff[person][day].details  = dayStaff[person].details;
+				}
 			}
+			
 		}
 		
-		console.log(staff);
 		return staff;
+
 	}
+
+	
 
 
 
 	/* toggle staff attendance */
-	function toggleStaffAttendance(staffDate) {
+	function toggleStaffAttendance(memberName, formattedDate) {
 
-		if (staffDate === undefined) {
-
-		}
+		let member = apiDataStaff[formattedDate]?.staff[memberName];
 		
-		switch (staffDate.attended) {
+		if (member === undefined) {
+			
+			// registerMemberInDay(memberName, formattedDate); // register day and member
+			
+			setTodayFromLastDay(); // import data to today
+
+			member = apiDataStaff[formattedDate]?.staff[memberName];
+			
+		}
+
+		switch (member.attended) {
 			case true:
-				staffDate.attended = false;
+				member.attended = false;
 				break;
 		
 			case false:
-				staffDate.attended = null;
+				member.attended = null;
 				break;
 				
 			default:
-				staffDate.attended = true;
+				member.attended = true;
 				break;
 		}
+		
 
-		staff = staff;
+		apiDataStaff = apiDataStaff;
+
+		emitUpdateApiDataStaff(apiDataStaff);
 
 	}
 
-	function registerToday(staffMemberName) {
+	function setTodayFromLastDay() {
 
-		if (staff[staffMemberName] === undefined) {
-			staff[staffMemberName] = {};
+		// duplicate last record
+		if (apiDataStaff[today] === undefined) {
+			apiDataStaff[today] = {
+				date_registered: true,
+				date_rest: false,
+				staff: apiDataStaff.last.staff
+			}
 		}
 
-		staff[staffMemberName][today] = {};
-		staff[staffMemberName][today].type = staff[staffMemberName].last.type;
-		staff[staffMemberName][today].active = true;
-		staff[staffMemberName][today].attended = true;
-		staff[staffMemberName][today].details = {};
+		// reset daily fields
+		for (const member in apiDataStaff[today].staff) {
+			apiDataStaff[today].staff[member].attended = null,
+			apiDataStaff[today].staff[member].details  = {}
+		}
+	}
 
-		console.log(staff[staffMemberName]);
+	function registerMemberInDay(memberName, formattedDate) {
+
+		if (apiDataStaff[formattedDate] === undefined) {
+			apiDataStaff[formattedDate] = {
+				date_registered: true,
+				date_rest: false,
+				staff: {}
+			}
+		}
+
+		if (apiDataStaff[formattedDate].staff[memberName] === undefined) {
+			apiDataStaff[formattedDate].staff[memberName] = {
+				type: apiDataStaff.last.staff[memberName].type,
+				active: apiDataStaff.last.staff[memberName].active,
+				attended: null,
+				details: {}
+			}
+		}
 
 	}
 	
@@ -159,7 +208,6 @@
 		return week;
 	}
 
-	$: week = getWeek( dateSelected == '' ? undefined : DateFunc.formattedToDate(dateSelected) );
 
 </script>
 
@@ -190,7 +238,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		{#await staff}
+		{#await staffTable}
 		<div>loading...</div>
 		{:then staffLog}
 			{#each Object.entries(staffLog) as [staffMember, memberDays], memberIndex (staffMember) }
@@ -213,7 +261,7 @@
 								class="today"
 								class:did={ memberDays[today] !== undefined && memberDays[today].attended === true }
 								class:didnot={ memberDays[today] !== undefined && memberDays[today].attended === false }
-								on:click={ () => { memberDays[today] ? toggleStaffAttendance(memberDays[today]) : registerToday(staffMember) }}
+								on:click={ () => { toggleStaffAttendance(staffMember, today) }}
 							>
 								{#if memberDays[today] !== undefined && memberDays[today].attended === true}
 									✔

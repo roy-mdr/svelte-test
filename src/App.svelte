@@ -18,21 +18,22 @@
 
 
 
-	function saveUsuarios(event) {
-		getPersonal.then( (res) => {
-			res.staff = event.detail;
-			getPersonal = Promise.resolve(res);
-		} )
+
+
+	let apiDataStaff;
+
+	function updateApiDataStaff(ev) {
+		apiDataStaff = ev.detail
 	}
 
 
 
 	/* modal usuarios */
 	let modalEditDay = false;
-	let editingDate = '';
+	let editingDate;
 
 	function openEditDay(ev) {
-		editingDate = ev.detail.date;
+		editingDate = ev.detail;
 		modalEditDay = true;
 	}
 
@@ -69,15 +70,18 @@
 	<Table
 		{today}
 		{dateSelected}
+		{apiDataStaff}
 		on:editDay={openEditDay}
+		on:updateApiDataStaff={updateApiDataStaff}
 	/>
-
+	
 	{#if modalEditDay}
-	<Usuarios
-		{editingDate}
-		on:save={saveUsuarios}
-		on:close={closeEditDay}
-	/>
+		<Usuarios
+			{editingDate}
+			{apiDataStaff}
+			on:save={updateApiDataStaff}
+			on:close={closeEditDay}
+		/>
 	{/if}
 </div>
 

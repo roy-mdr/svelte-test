@@ -1,17 +1,9 @@
 export default {
-	"2021-09-28": {
+	"2021-09-25": {
 		date_registered: false,
 		date_rest: false,
-		staff: [
-			{
-				name: "Nombre Genérico Parte Uno",
-				type: "Maestro",
-				active: true,
-				attended: null,
-				details: {}
-			},
-			{
-				name: "Francisco Javier Ramon",
+		staff: {
+			"Francisco Javier Ramon": {
 				type: "Maestro",
 				active: true,
 				attended: true,
@@ -20,8 +12,7 @@ export default {
 					leaved: 1400
 				}
 			},
-			{
-				name: "Josue Baena",
+			"Josue Baena": {
 				type: "Ayudante",
 				active: true,
 				attended: false,
@@ -30,98 +21,85 @@ export default {
 					injured: true
 				}
 			},
-			{
-				name: "Rufino Cortes",
+			"Rufino Cortes": {
 				type: "Maestro",
 				active: false,
 				attended: true,
 				details: {}
 			},
-			{
-				name: "Serafin Megias",
+			"Serafin Megias": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Jose Javier Bernabe",
+			"Jose Javier Bernabe": {
 				type: "Ayudante",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Cristian Centeno",
+			"Cristian Centeno": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Francisco Miguel Monzon",
+			"Francisco Miguel Monzon": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Jose Gabriel Arranz",
+			"Jose Gabriel Arranz": {
 				type: "Ayudante",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Juan Vicente Leiva",
+			"Juan Vicente Leiva": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Juan Fernando Arenas",
+			"Juan Fernando Arenas": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Jose Angel Barros",
+			"Jose Angel Barros": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Raimundo Sandoval",
+			"Raimundo Sandoval": {
 				type: "Ayudante",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Luis Angel Tena",
+			"Luis Angel Tena": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			}
-		]
+		}
 	},
-	"2021-09-27": {
+	"2021-09-29": {
 		date_registered: false,
 		date_rest: false,
-		staff: [
-			{
-				name: "Nombre Genérico Parte Uno",
+		staff: {
+			"Nombre Genérico Parte Uno": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Francisco Javier Ramon",
+			"Francisco Javier Ramon": {
 				type: "Maestro",
 				active: true,
 				attended: true,
@@ -130,8 +108,7 @@ export default {
 					leaved: 1400
 				}
 			},
-			{
-				name: "Josue Baena",
+			"Josue Baena": {
 				type: "Ayudante",
 				active: true,
 				attended: false,
@@ -140,98 +117,85 @@ export default {
 					injured: true
 				}
 			},
-			{
-				name: "Rufino Cortes",
+			"Rufino Cortes": {
 				type: "Maestro",
 				active: false,
 				attended: true,
 				details: {}
 			},
-			{
-				name: "Serafin Megias",
+			"Serafin Megias": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Jose Javier Bernabe",
+			"Jose Javier Bernabe": {
 				type: "Ayudante",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Cristian Centeno",
+			"Cristian Centeno": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Francisco Miguel Monzon",
+			"Francisco Miguel Monzon": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Jose Gabriel Arranz",
+			"Jose Gabriel Arranz": {
 				type: "Ayudante",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Juan Vicente Leiva",
+			"Juan Vicente Leiva": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Juan Fernando Arenas",
+			"Juan Fernando Arenas": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Jose Angel Barros",
+			"Jose Angel Barros": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Raimundo Sandoval",
+			"Raimundo Sandoval": {
 				type: "Ayudante",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Luis Angel Tena",
+			"Luis Angel Tena": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			}
-		]
+		}
 	},
 	"last": {
 		date_registered: false,
 		date_rest: false,
-		staff: [
-			{
-				name: "Nombre Genérico Parte Uno",
+		staff: {
+			"Nombre Genérico Parte Uno": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Francisco Javier Ramon",
+			"Francisco Javier Ramon": {
 				type: "Maestro",
 				active: true,
 				attended: true,
@@ -240,8 +204,7 @@ export default {
 					leaved: 1400
 				}
 			},
-			{
-				name: "Josue Baena",
+			"Josue Baena": {
 				type: "Ayudante",
 				active: true,
 				attended: false,
@@ -250,88 +213,72 @@ export default {
 					injured: true
 				}
 			},
-			{
-				name: "Rufino Cortes",
+			"Rufino Cortes": {
 				type: "Maestro",
 				active: false,
 				attended: true,
 				details: {}
 			},
-			{
-				name: "Serafin Megias",
+			"Serafin Megias": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Jose Javier Bernabe",
+			"Jose Javier Bernabe": {
 				type: "Ayudante",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Cristian Centeno",
+			"Cristian Centeno": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Francisco Miguel Monzon",
+			"Francisco Miguel Monzon": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Jose Gabriel Arranz",
+			"Jose Gabriel Arranz": {
 				type: "Ayudante",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Juan Vicente Leiva",
+			"Juan Vicente Leiva": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Juan Fernando Arenas",
+			"Juan Fernando Arenas": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Jose Angel Barros",
+			"Jose Angel Barros": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Raimundo Sandoval",
+			"Raimundo Sandoval": {
 				type: "Ayudante",
 				active: true,
 				attended: null,
 				details: {}
 			},
-			{
-				name: "Luis Angel Tena",
+			"Luis Angel Tena": {
 				type: "Maestro",
 				active: true,
 				attended: null,
 				details: {}
 			}
-		]
+		}
 	}
 }
-
-/* {
-	date: "2021.9.13",
-	
-} */
